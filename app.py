@@ -746,7 +746,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
   .crow{align-items:flex-start}
   .chat-btn{left:76px;right:14px;bottom:16px;justify-content:center;padding:13px 14px}
   .wa{left:14px;bottom:16px;width:50px;height:50px}
-  .chat-panel{inset:0;z-index:200;width:100vw;height:100vh;height:100dvh;max-height:none;border:0;border-radius:0}
+  .chat-panel{top:var(--chat-top,0px);right:0;bottom:auto;left:0;z-index:200;width:100vw;height:var(--chat-vh,100dvh);max-height:none;border:0;border-radius:0}
   .chat-head{padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));gap:10px;flex:none}
   .chat-head img{width:32px;height:32px}
   .chat-head .s{display:none}
@@ -1032,10 +1032,20 @@ document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classL
 
 // chat
 let greeted=false;
-function openChat(){document.getElementById('chatPanel').classList.add('open');document.getElementById('chatBtn').style.display='none';document.body.style.overflow='hidden';
+function syncChatViewport(){
+  const vv=window.visualViewport;
+  document.documentElement.style.setProperty('--chat-vh',(vv?vv.height:window.innerHeight)+'px');
+  document.documentElement.style.setProperty('--chat-top',(vv?vv.offsetTop:0)+'px');
+}
+if(window.visualViewport){
+  visualViewport.addEventListener('resize',syncChatViewport);
+  visualViewport.addEventListener('scroll',syncChatViewport);
+}
+function isPhone(){return window.matchMedia('(max-width: 520px)').matches}
+function openChat(){syncChatViewport();document.getElementById('chatPanel').classList.add('open');document.getElementById('chatBtn').style.display='none';document.body.style.overflow='hidden';
   if(!greeted){greeted=true;addMsg("Hi! 👋 I'm here for A&J Property Maintenance. What can we help you with — bathroom, kitchen, decorating, something outside?","bot")}
-  document.getElementById('chatInput').focus()}
-function closeChat(){document.getElementById('chatPanel').classList.remove('open');document.getElementById('chatBtn').style.display='flex';document.body.style.overflow=''}
+  if(!isPhone())document.getElementById('chatInput').focus()}
+function closeChat(){document.getElementById('chatPanel').classList.remove('open');document.getElementById('chatBtn').style.display='flex';document.body.style.overflow='';document.documentElement.style.removeProperty('--chat-vh');document.documentElement.style.removeProperty('--chat-top')}
 function addMsg(t,who){const m=document.createElement('div');m.className='msg '+who;m.textContent=t;
   const box=document.getElementById('msgs');box.appendChild(m);box.scrollTop=box.scrollHeight}
 function addImg(src){const m=document.createElement('div');m.className='msg img user';const i=document.createElement('img');i.src=src;m.appendChild(i);
@@ -1050,6 +1060,8 @@ async function sendMsg(){const inp=document.getElementById('chatInput');const te
     const d=await r.json();typing(false);addMsg(d.reply,'bot');
   }catch(e){typing(false);addMsg("Sorry, something glitched there — give that another go?","bot")}}
 document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
+document.getElementById('chatInput').addEventListener('focus',()=>setTimeout(syncChatViewport,80));
+document.getElementById('chatInput').addEventListener('blur',()=>setTimeout(syncChatViewport,80));
 
 // resize image client-side before upload
 function resizeImage(file){return new Promise((res,rej)=>{const r=new FileReader();
