@@ -34,7 +34,7 @@ BUSINESS = {
     "owner": "the A&J team",          # put the owner's first name here for a personal sign-off
     "phone_display": "07378 571162",
     "phone_e164": "447378571162",     # used for tel: and WhatsApp links
-    "email_public": "info@ajpropertymaintenanceltd.co.uk",  # shown on the site
+    "email_public": "Klontian12@gmail.com",  # shown on the site
     "area_line": "Portsmouth, Southampton, Bournemouth & Guildford",
     "postcode": "PO1 5JA",
     "instagram": "https://instagram.com/ajpropertym",
@@ -43,7 +43,7 @@ BUSINESS = {
 
 # Where lead emails are sent. Set NOTIFY_TO in your environment.
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
-NOTIFY_TO = os.environ.get("NOTIFY_TO", "info@ajpropertymaintenanceltd.co.uk")
+NOTIFY_TO = os.environ.get("NOTIFY_TO", "Klontian12@gmail.com")
 # The "from" address must be on a domain you've verified in Resend. While you're
 # testing you can use Resend's shared sender below; swap to your domain later.
 MAIL_FROM = os.environ.get("MAIL_FROM", "A&J Website <onboarding@resend.dev>")
@@ -97,35 +97,22 @@ SERVICES = [
 # ---------------------------------------------------------------------------
 P = "static/images/portfolio/"
 PORTFOLIO = [
-    {"img": P+"bathroom-beige-suite.webp",        "cat": "Bathrooms",        "cap": "Full bathroom — freestanding bath & walk-in shower"},
-    {"img": P+"bathroom-concrete-vanity.webp",    "cat": "Bathrooms",        "cap": "Concrete-effect vanity with vessel basin"},
-    {"img": P+"bathroom-freestanding-screen.jpg", "cat": "Bathrooms",        "cap": "Freestanding bath with crittall-style screen"},
-    {"img": P+"shower-woodeffect.webp",           "cat": "Bathrooms",        "cap": "Wood-effect tiled shower enclosure"},
-    {"img": P+"kitchen-grey-white.jpg",           "cat": "Kitchens",         "cap": "Two-tone fitted kitchen"},
-    {"img": P+"decor-tropical-wallpaper.jpg",     "cat": "Decorating",       "cap": "Bold tropical wallpaper hang"},
-    {"img": P+"decor-pink-jungle-bedroom.jpg",    "cat": "Decorating",       "cap": "Jungle-print bedroom with panelled dado"},
-    {"img": P+"decor-blue-damask-hall.jpg",       "cat": "Decorating",       "cap": "Blue damask wallpaper & crisp white woodwork"},
-    {"img": P+"decor-marble-panel-hall.jpg",      "cat": "Decorating",       "cap": "Marble-effect wall panelling, entrance hall"},
-    {"img": P+"decor-grey-feature-wall.jpg",      "cat": "Decorating",       "cap": "Smooth grey feature wall, neatly cut in"},
-    {"img": P+"joinery-oak-worktop.jpg",          "cat": "Joinery",          "cap": "Solid oak worktop & bespoke cabinetry"},
-    {"img": P+"decor-slat-panel-wall.jpg",        "cat": "Joinery",          "cap": "Oak slat acoustic wall panelling"},
-    {"img": P+"paving-sandstone-backdoor.webp",   "cat": "Paving & Gardens", "cap": "Indian sandstone patio by the back door"},
-    {"img": P+"paving-porcelain-brick-step.webp", "cat": "Paving & Gardens", "cap": "Porcelain patio with brick-faced step"},
-    {"img": P+"paving-porcelain-steps.jpg",       "cat": "Paving & Gardens", "cap": "Porcelain paving with brick-faced steps"},
-    {"img": P+"paving-sandstone-steps.jpg",       "cat": "Paving & Gardens", "cap": "Indian sandstone patio & steps"},
-    {"img": P+"paving-patio-brick-edge.jpg",      "cat": "Paving & Gardens", "cap": "Riven patio with brick-edge detail"},
-    {"img": P+"paving-grey-stone.jpg",            "cat": "Paving & Gardens", "cap": "Grey porcelain plank paving"},
-    {"img": P+"groundwork-concrete-base.jpg",     "cat": "Building",         "cap": "Reinforced concrete base, poured & finished"},
-    {"img": P+"groundwork-retaining-wall.jpg",    "cat": "Building",         "cap": "Concrete retaining wall & new paving"},
-    {"img": P+"loft-conversion-structure.jpg",    "cat": "Building",         "cap": "Loft structural works"},
-    {"img": P+"fencing-closeboard-sunny.webp",    "cat": "Exterior",         "cap": "New close-board fencing on concrete posts"},
-    {"img": P+"fencing-run-grey.webp",            "cat": "Exterior",         "cap": "Fencing replaced — concrete posts & gravel boards"},
-    {"img": P+"fencing-new-panels.jpg",           "cat": "Exterior",         "cap": "New fence run, larch-lap panels"},
-    {"img": P+"exterior-render-frontage.jpg",     "cat": "Exterior",         "cap": "Restored & repainted frontage"},
-    {"img": P+"electrical-first-fix.jpg",         "cat": "Electrical",       "cap": "First-fix wiring & wall chasing"},
+    {"img": P+"large-patio-porcelain.jpg",        "cat": "Paving & Gardens", "cap": "Large-format porcelain patio, freshly laid"},
+    {"img": P+"stone-patio-curved-steps.jpg",     "cat": "Paving & Gardens", "cap": "Stone patio with curved steps and brick edging"},
+    {"img": P+"raised-porcelain-patio.jpg",       "cat": "Paving & Gardens", "cap": "Raised porcelain patio with timber sleepers"},
+    {"img": P+"patio-artificial-grass.jpg",       "cat": "Paving & Gardens", "cap": "Patio and artificial grass garden finish"},
+    {"img": P+"large-format-patio.jpg",           "cat": "Paving & Gardens", "cap": "Clean large-format garden patio"},
+    {"img": P+"side-path-porcelain-tiles.jpg",    "cat": "Paving & Gardens", "cap": "Side path finished with porcelain tiles"},
+    {"img": P+"doorstep-patio-detail.jpg",        "cat": "Paving & Gardens", "cap": "Patio and doorstep detail"},
+    {"img": P+"block-paving-driveway.jpg",        "cat": "Driveways",        "cap": "Block paving driveway with red border"},
+    {"img": P+"composite-fence-front.jpg",        "cat": "Exterior",         "cap": "Composite front fencing on brick wall"},
+    {"img": P+"victorian-front-step.jpg",         "cat": "Tiling",           "cap": "Front step tiled with patterned border"},
+    {"img": P+"patterned-utility-tiles.jpg",      "cat": "Tiling",           "cap": "Patterned utility room floor tiles"},
+    {"img": P+"garden-swing-base.jpg",            "cat": "Building",         "cap": "Garden base ready for a swing frame"},
+    {"img": P+"concrete-base-prep.jpg",           "cat": "Building",         "cap": "Concrete base preparation with reinforcement"},
+    {"img": P+"concrete-base-finished.jpg",       "cat": "Building",         "cap": "Finished concrete base"},
 ]
-FILTERS = ["All", "Bathrooms", "Kitchens", "Decorating", "Paving & Gardens",
-           "Building", "Joinery", "Exterior", "Electrical"]
+FILTERS = ["All", "Paving & Gardens", "Tiling", "Driveways", "Building", "Exterior"]
 
 # ---------------------------------------------------------------------------
 # HERO VIDEO  --  the single biggest "wow" lever. Drop one of his best clips
@@ -522,6 +509,7 @@ html{scroll-behavior:smooth}
 body{background:var(--ink);color:var(--cream);font-family:'Inter',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
+button,input{font:inherit}
 .serif{font-family:'Fraunces',Georgia,serif}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 .eyebrow{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);font-weight:600}
@@ -559,7 +547,7 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
 .hero{min-height:92vh;display:flex;align-items:center;position:relative;isolation:isolate}
 .hero::before{content:"";position:absolute;inset:0;z-index:-2;
   background:linear-gradient(180deg,rgba(8,7,6,.62),rgba(8,7,6,.86)),
-  url('{{ url_for('static', filename='images/portfolio/bathroom-beige-suite.webp') }}') center/cover}
+  url('{{ url_for('static', filename='images/portfolio/large-patio-porcelain.jpg') }}') center/cover}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 80% at 80% 0%,rgba(212,175,55,.16),transparent 55%)}
 .hero .inner{max-width:760px;padding:40px 0}
 .hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(40px,7vw,76px);line-height:1.02;margin:18px 0 18px;color:#fff;letter-spacing:-.01em}
@@ -607,16 +595,33 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
   font-size:13px;font-weight:500;cursor:pointer;transition:.2s;font-family:inherit}
 .filters button:hover{border-color:var(--gold);color:var(--gold)}
 .filters button.active{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.gallery{columns:3 280px;column-gap:14px}
-.shot{position:relative;break-inside:avoid;margin-bottom:14px;border-radius:14px;overflow:hidden;cursor:pointer;
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.shot{position:relative;min-height:0;aspect-ratio:4/3;border-radius:14px;overflow:hidden;cursor:pointer;
   border:1px solid var(--line);background:var(--ink2)}
-.shot img{width:100%;transition:transform .5s ease;display:block}
+.shot:nth-child(1),.shot:nth-child(2){grid-column:span 2;aspect-ratio:16/9}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block}
 .shot:hover img{transform:scale(1.05)}
-.shot figcaption{position:absolute;inset:auto 0 0 0;padding:30px 14px 12px;font-size:12.5px;color:#f3ecdd;
-  background:linear-gradient(transparent,rgba(7,6,5,.86));opacity:0;transform:translateY(8px);transition:.3s}
-.shot:hover figcaption{opacity:1;transform:none}
+.shot figcaption{position:absolute;inset:auto 0 0 0;padding:34px 14px 12px;font-size:12.5px;color:#f3ecdd;
+  background:linear-gradient(transparent,rgba(7,6,5,.9));opacity:1}
 .shot .tag{position:absolute;top:10px;left:10px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--gold);background:rgba(7,6,5,.72);border:1px solid var(--line);padding:4px 9px;border-radius:999px}
+@media(max-width:760px){
+  .wrap{padding:0 18px}
+  nav .bar{height:62px}
+  .navlinks{inset:62px 0 auto 0}
+  .hero{min-height:78vh}
+  .hero .inner{padding:34px 0}
+  .hero .meta{gap:12px;margin-top:28px}
+  .hero .meta div{width:100%}
+  .cta-row{display:grid;grid-template-columns:1fr;gap:10px}
+  .btn{width:100%;justify-content:center;padding:13px 18px;text-align:center}
+  .filters{overflow-x:auto;flex-wrap:nowrap;margin-left:-18px;margin-right:-18px;padding:0 18px 4px;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
+  .filters button{flex:0 0 auto}
+  .gallery{grid-template-columns:1fr;gap:14px}
+  .shot,.shot:nth-child(1),.shot:nth-child(2){grid-column:auto;aspect-ratio:4/3}
+  .shot figcaption{font-size:12px}
+}
 
 /* lightbox */
 .lb{position:fixed;inset:0;z-index:120;background:rgba(6,5,4,.94);display:none;align-items:center;justify-content:center;padding:24px}
@@ -668,7 +673,7 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
 .crow .ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:rgba(212,175,55,.1);border:1px solid var(--line);color:var(--gold);flex:none}
 .crow .ic svg{width:20px;height:20px}
 .crow .lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
-.crow .val{font-size:16px;color:var(--cream);font-weight:500}
+.crow .val{font-size:16px;color:var(--cream);font-weight:500;overflow-wrap:anywhere}
 .socials{display:flex;gap:12px;margin-top:22px}
 .socials a{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;border:1px solid var(--line);color:var(--gold);transition:.2s}
 .socials a:hover{background:var(--gold);color:var(--ink)}
@@ -714,6 +719,15 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
 .iconbtn:hover{background:var(--gold);color:var(--ink)}.iconbtn svg{width:19px;height:19px}
 .iconbtn.busy{opacity:.5;pointer-events:none}
 .hp{position:absolute;left:-9999px}
+@media(max-width:520px){
+  .sec{padding:54px 0}
+  .svc-grid,.why-grid,.rev-grid{grid-template-columns:1fr}
+  .ccard{padding:22px 18px}
+  .crow{align-items:flex-start}
+  .chat-btn{left:76px;right:14px;bottom:16px;justify-content:center;padding:13px 14px}
+  .wa{left:14px;bottom:16px;width:50px;height:50px}
+  .chat-panel{right:10px;left:10px;bottom:10px;width:auto;height:min(640px,calc(100vh - 20px));border-radius:16px}
+}
 </style>
 </head>
 <body>
@@ -742,7 +756,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
 <header class="hero {{ 'has-video' if hero_video else '' }}" id="top">
   {% if hero_video %}
   <video class="hero-bg" autoplay muted loop playsinline preload="auto"
-         poster="{{ url_for('static', filename='images/portfolio/bathroom-beige-suite.webp') }}">
+         poster="{{ url_for('static', filename='images/portfolio/large-patio-porcelain.jpg') }}">
     <source src="{{ url_for('static', filename=hero_video[7:]) }}" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
