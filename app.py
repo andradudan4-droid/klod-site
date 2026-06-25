@@ -251,7 +251,7 @@ Other notes:"""
 def summarise_lead(conv):
     try:
         resp = client_chat(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             messages=[{"role": "system", "content": LEAD_SUMMARY_PROMPT},
                       {"role": "user", "content": _transcript(conv)}],
             max_tokens=250, temperature=0.2)
@@ -264,7 +264,7 @@ def summarise_lead(conv):
 def _post_resend(subject, text, html_body=None, attachments=None):
     if not RESEND_API_KEY:
         print("RESEND_API_KEY not set, skipping email")
-        return
+        return {"skipped": "RESEND_API_KEY not set"}
     payload = {"from": MAIL_FROM, "to": [NOTIFY_TO], "subject": subject, "text": text}
     if html_body:
         payload["html"] = html_body
@@ -276,8 +276,12 @@ def _post_resend(subject, text, html_body=None, attachments=None):
                           json=payload, timeout=15)
         if r.status_code >= 300:
             print(f"Resend error: {r.status_code} {r.text}")
+        else:
+            print(f"Resend OK {r.status_code}: '{subject}' -> {NOTIFY_TO}")
+        return {"status": r.status_code, "body": r.text[:600]}
     except Exception as e:
         print(f"Failed to send email: {e}")
+        return {"error": str(e)}
 
 
 def _parse_summary(structured):
@@ -1321,6 +1325,26 @@ def robots():
     return Response("User-agent: *\nAllow: /\n", mimetype="text/plain")
 
 
+# --- TEMPORARY email debug route. Delete once leads are arriving. ---
+# Visit  /_debug/email?key=ajtest         to see config
+# Visit  /_debug/email?key=ajtest&send=1  to fire a real test email
+@app.route("/_debug/email")
+def debug_email():
+    if request.args.get("key") != os.environ.get("DEBUG_KEY", "ajtest"):
+        return Response("not found", status=404)
+    info = {
+        "resend_key_set": bool(RESEND_API_KEY),
+        "resend_key_tail": ("..." + RESEND_API_KEY[-4:]) if RESEND_API_KEY else None,
+        "notify_to": NOTIFY_TO,
+        "mail_from": MAIL_FROM,
+    }
+    if request.args.get("send") == "1":
+        info["send_result"] = _post_resend(
+            "A&J website — test email",
+            "If you can read this, lead emails are working. You can delete the debug route now.")
+    return jsonify(info)
+
+
 @app.route("/chat", methods=["POST"])
 def chat_endpoint():
     session_id = session.get("session_id") or str(uuid.uuid4())
@@ -1353,7 +1377,7 @@ def chat_endpoint():
         messages = list(conversation)
         messages.append({"role": "system", "content": _chat_memory_hint(conversation, session_id)})
         response = client_chat(
-            model="llama-3.3-70b-versatile", messages=messages, max_tokens=256, timeout=20)
+            model="openai/gpt-oss-120b", messages=messages, max_tokens=256, temperature=0.4, timeout=20)
         ai_reply = response.choices[0].message.content
     except Exception as e:
         print(f"Chat completion failed: {e}")
@@ -1373,7 +1397,13 @@ def chat_endpoint():
     conversation.append({"role": "assistant", "content": ai_reply})
 
     if session_id not in notified_sessions and has_contact_info(conversation):
-        if lead_ready or _looks_like_closing(user_message) or len(conversation) >= 24:
+        ready_to_send = (
+            lead_ready
+            or _looks_like_closing(user_message)
+            or len(conversation) >= 12
+            or (status.get("job") and len(conversation) >= 6)
+        )
+        if ready_to_send:
             notified_sessions.add(session_id)
             send_lead_email(list(conversation), list(session_images.get(session_id, [])))
 
