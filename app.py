@@ -46,7 +46,7 @@ RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 NOTIFY_TO = os.environ.get("NOTIFY_TO", "Klontian12@gmail.com")
 # The "from" address must be on a domain you've verified in Resend. While you're
 # testing you can use Resend's shared sender below; swap to your domain later.
-MAIL_FROM = os.environ.get("MAIL_FROM", "A&J Website <onboarding@resend.dev>")
+MAIL_FROM = os.environ.get("MAIL_FROM", "A&J Property Maintenance Solutions <onboarding@resend.dev>")
 
 # --- Photo upload settings ---
 MAX_IMAGES_PER_SESSION = 6
@@ -376,7 +376,7 @@ def _lead_email_html(fields, conv, image_count):
             '<div style="max-width:620px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;'
             'box-shadow:0 2px 12px rgba(0,0,0,.07)"><div style="background:#0a0a0a;padding:24px 28px">'
             '<div style="color:#D4AF37;font-size:12px;letter-spacing:.18em;text-transform:uppercase;'
-            'font-weight:700">A&amp;J Property Maintenance</div>'
+            'font-weight:700">A&amp;J Property Maintenance Solutions</div>'
             '<div style="color:#fff;font-size:21px;font-weight:700;margin-top:5px">New enquiry from your website</div></div>'
             '<div style="padding:26px 28px"><p style="margin:0 0 20px;font-size:14px;color:#666">'
             'Here are the details captured by your website assistant:</p>'
@@ -387,14 +387,14 @@ def _lead_email_html(fields, conv, image_count):
             'font-weight:700;margin-bottom:14px">Full conversation</div>'
             f'{_transcript_html(conv)}</div>'
             '<div style="background:#faf9f6;padding:16px 28px;border-top:1px solid #eee;font-size:12px;color:#aaa">'
-            'Sent automatically by the A&amp;J Property Maintenance website assistant.</div>'
+            'Sent automatically by the A&amp;J Property Maintenance Solutions website assistant.</div>'
             '</div></body></html>')
 
 
 def send_lead_email(conv, images=None):
     images = images or []
     fields = _lead_fields(conv)
-    text_lines = ["NEW LEAD - A&J Property Maintenance", "===================================="]
+    text_lines = ["NEW LEAD - A&J Property Maintenance Solutions", "===================================="]
     for k, v in fields.items():
         if v:
             text_lines.append(f"{k}: {v}")
@@ -914,7 +914,7 @@ footer a:hover{color:var(--gold)}
   <div class="wrap bar">
     <a class="brand" href="#top">
       <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="A&J logo">
-      <span style="line-height:1.05"><b>A&amp;J</b><span>Property Maintenance</span></span>
+      <span style="line-height:1.05"><b>A&amp;J</b><span>Property Maintenance Solutions</span></span>
     </a>
     <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')" aria-label="Menu">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -1180,7 +1180,7 @@ document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classL
 let greeted=false;
 function isPhone(){return window.matchMedia('(max-width: 520px)').matches}
 function openChat(){document.getElementById('chatPanel').classList.add('open');document.getElementById('chatBtn').style.display='none';document.body.style.overflow='hidden';
-  if(!greeted){greeted=true;addMsg("Hi! 👋 I'm here for A&J Property Maintenance. What can we help you with — bathroom, kitchen, decorating, something outside?","bot")}
+  if(!greeted){greeted=true;addMsg("Hi! 👋 I'm here for A&J Property Maintenance Solutions. What can we help you with — bathroom, kitchen, decorating, something outside?","bot")}
   if(!isPhone())document.getElementById('chatInput').focus()}
 function closeChat(){document.getElementById('chatPanel').classList.remove('open');document.getElementById('chatBtn').style.display='flex';document.body.style.overflow=''}
 function addMsg(t,who){const m=document.createElement('div');m.className='msg '+who;m.textContent=t;
@@ -1252,7 +1252,7 @@ footer{border-top:1px solid var(--line);padding-top:24px;margin-top:42px;color:v
 </head>
 <body>
 <main class="wrap">
-  <a class="brand" href="/"><img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="A&J logo">A&amp;J Property Maintenance</a>
+  <a class="brand" href="/"><img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="A&J logo">A&amp;J Property Maintenance Solutions</a>
   <a class="back" href="/">Back to home</a>
   <div class="eyebrow">Privacy Policy</div>
   <h1>How we handle your information</h1>
@@ -1332,6 +1332,27 @@ def sitemap():
 @app.route("/robots.txt")
 def robots():
     return Response("User-agent: *\nAllow: /\n", mimetype="text/plain")
+
+
+# --- TEMPORARY email debug route. Delete once leads are arriving. ---
+# Visit  /_debug/email?key=ajtest         to see config
+# Visit  /_debug/email?key=ajtest&send=1  to fire a real test email
+@app.route("/_debug/email")
+def debug_email():
+    if request.args.get("key") != os.environ.get("DEBUG_KEY", "ajtest"):
+        return Response("not found", status=404)
+    info = {
+        "resend_key_set": bool(RESEND_API_KEY),
+        "resend_key_tail": ("..." + RESEND_API_KEY[-4:]) if RESEND_API_KEY else None,
+        "notify_to": NOTIFY_TO,
+        "mail_from": MAIL_FROM,
+    }
+    if request.args.get("send") == "1":
+        info["send_result"] = _post_resend(
+            "A&J website — test email",
+            "If you can read this, lead emails are working. You can delete the debug route now.")
+    return jsonify(info)
+
 
 @app.route("/chat", methods=["POST"])
 def chat_endpoint():
