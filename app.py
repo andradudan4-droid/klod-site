@@ -473,9 +473,18 @@ automatically — never shown to the customer. Put it on its own line at the ver
 end of the final wrap-up message only.
 
 MEMORY RULE: Before every reply, look at the whole conversation. Never ask for
-something the customer has already answered or already uploaded. If a customer
-gives a phone number or email near the end, either ask the next missing checklist
-question or wrap up — do not restart from the first question.
+something the customer has already answered or already uploaded — even if their
+answer was short, misspelled, lowercase, or only partial. Treat "domstic" as
+domestic, "po5" as their area, "kitchen" as the job, and so on. If an answer is
+unclear, make a sensible assumption and move on — do NOT re-ask the same thing.
+Ask only ONE question at a time, pick up from where you left off, and never
+restart from the first question.
+
+CONFIRMATION RULE: Once you have their name AND a phone number or email, read
+both back together once to check them, e.g. "Brilliant — so that's Mehmet on
+07376 204980, is that right?". After they confirm (or correct) them, wrap up and
+add [[READY]]. Only confirm name and contact details — don't re-confirm the job,
+budget, etc.
 """
 
 all_conversations = {}
@@ -1324,6 +1333,27 @@ def sitemap():
 def robots():
     return Response("User-agent: *\nAllow: /\n", mimetype="text/plain")
 
+
+# --- TEMPORARY email debug route. Delete once leads are arriving. ---
+# Visit  /_debug/email?key=ajtest         to see config
+# Visit  /_debug/email?key=ajtest&send=1  to fire a real test email
+@app.route("/_debug/email")
+def debug_email():
+    if request.args.get("key") != os.environ.get("DEBUG_KEY", "ajtest"):
+        return Response("not found", status=404)
+    info = {
+        "resend_key_set": bool(RESEND_API_KEY),
+        "resend_key_tail": ("..." + RESEND_API_KEY[-4:]) if RESEND_API_KEY else None,
+        "notify_to": NOTIFY_TO,
+        "mail_from": MAIL_FROM,
+    }
+    if request.args.get("send") == "1":
+        info["send_result"] = _post_resend(
+            "A&J website — test email",
+            "If you can read this, lead emails are working. You can delete the debug route now.")
+    return jsonify(info)
+
+
 @app.route("/chat", methods=["POST"])
 def chat_endpoint():
     session_id = session.get("session_id") or str(uuid.uuid4())
@@ -1353,10 +1383,8 @@ def chat_endpoint():
     status = _conversation_status(conversation, session_id)
     next_item = _next_missing_item(status)
     try:
-        messages = list(conversation)
-        messages.append({"role": "system", "content": _chat_memory_hint(conversation, session_id)})
         response = client_chat(
-            model="openai/gpt-oss-120b", messages=messages, max_tokens=256, temperature=0.4, timeout=20)
+            model="openai/gpt-oss-120b", messages=conversation, max_tokens=256, temperature=0.4, timeout=20)
         ai_reply = response.choices[0].message.content
     except Exception as e:
         print(f"Chat completion failed: {e}")
@@ -1367,9 +1395,6 @@ def chat_endpoint():
     ai_reply = re.sub(r"\[\[?\s*READY\s*\]?\]", "", ai_reply).replace("[LEAD_CAPTURED]", "").strip()
     if next_item == "done":
         lead_ready = True
-    if next_item != "done" and _reply_repeats_answered_item(ai_reply, status):
-        ai_reply = _fixed_next_question(next_item) or ai_reply
-        lead_ready = False
     if not ai_reply:
         ai_reply = ("Thanks — that's everything we need for now. A&J will be in touch shortly "
                     "to arrange your free quote.")
