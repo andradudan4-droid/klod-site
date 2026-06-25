@@ -147,12 +147,28 @@ VIDEOS = [
 # Paste your Google reviews in the same format and they'll appear automatically.
 # ---------------------------------------------------------------------------
 REVIEWS = [
-    {"text": "Fantastic work, informative all the way — explaining the whole way through. Very polite and clean. Will be using again.",
-     "name": "Verified customer", "where": "Portsmouth, PO14"},
-    {"text": "Listened to my requirements, told me what they'd do and any prep work first, then did exactly what they said. Lots of broken concrete and earth, but everything was sheeted and all the rubbish removed on completion, with the lawn left in good condition. Polite, cheerful and hard working — they even returned early next morning to damp down the path. Definitely would use again.",
-     "name": "Verified customer", "where": "Portsmouth, PO14"},
-    # Add Angel's OWN Google reviews here once confirmed, same format:
-    # {"text": "...", "name": "Customer name", "where": "Google review"},
+    {"text": "I highly recommend Klod. He installed drainage in my back garden and refreshed my garden slabs last year. I asked him back again to install my kitchen extractor. Friendly, professional, reliable and always helpful.",
+     "name": "Jessie Hoang", "where": "Google review"},
+    {"text": "A&J recently completed a job at my house and did an amazing job. He took care of the landscaping and necessary work with impressive efficiency and reliability. The result was outstanding.",
+     "name": "Annie Barone", "where": "Google review"},
+    {"text": "Amazing guys. Did our porch today and did an incredible job. Highly recommend. Very kind people as well.",
+     "name": "Ann Shahid", "where": "Google review"},
+    {"text": "Brilliant work fixing flood damage to a bedroom. They fitted me in quickly while still taking time to do the job properly. Kind, friendly and professional.",
+     "name": "Katy Stewart", "where": "Google review"},
+    {"text": "We have used him a few times because we always get the best results. Klod is friendly, helpful and reliable. Great work, highly recommended.",
+     "name": "Dannie Oakley", "where": "Google review"},
+    {"text": "Very happy with the work done by A&J Property Maintenance. They fixed several issues and did an excellent paint job. Tidy, professional and great attention to detail.",
+     "name": "Karaj Qioleyu", "where": "Google review"},
+    {"text": "Reliable, trustworthy and very experienced. Did a great job. Highly recommended.",
+     "name": "Silvia Montisci", "where": "Google review"},
+    {"text": "Very efficient and professional. Would keep using him as my go-to for home works. Thank you.",
+     "name": "Florence Okoh", "where": "Google review"},
+    {"text": "Arranged with my tenant, gave a reasonable quote, arrived on time and did excellent work. New sink fitted and wall tiled. Neat, tidy and a great result.",
+     "name": "Debjcairns", "where": "Google review"},
+    {"text": "Recommended for radiator installation. Very considerate, honest and trustworthy, with excellent communication. I would not hesitate to contact him again.",
+     "name": "Federica Biondo", "where": "Google review"},
+    {"text": "Klod is professional and polite. His timekeeping is good, he works incredibly hard and cleans up after himself. Definitely our go-to person from now on.",
+     "name": "Mac", "where": "Google review"},
 ]
 
 # ===========================================================================
@@ -549,7 +565,7 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
   background:linear-gradient(180deg,rgba(8,7,6,.62),rgba(8,7,6,.86)),
   url('{{ url_for('static', filename='images/portfolio/large-patio-porcelain.jpg') }}') center/cover}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 80% at 80% 0%,rgba(212,175,55,.16),transparent 55%)}
-.hero .inner{max-width:760px;padding:40px 0}
+.hero .inner{max-width:760px;padding:40px 24px}
 .hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(40px,7vw,76px);line-height:1.02;margin:18px 0 18px;color:#fff;letter-spacing:-.01em}
 .hero h1 em{font-style:italic;color:var(--gold-soft)}
 .hero p{font-size:clamp(16px,2.2vw,20px);color:#e5ddcd;max-width:560px;margin-bottom:32px}
@@ -610,7 +626,10 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
   nav .bar{height:62px}
   .navlinks{inset:62px 0 auto 0}
   .hero{min-height:78vh}
-  .hero .inner{padding:34px 0}
+  .hero .inner{padding:34px 18px 48px}
+  .hero h1{font-size:clamp(38px,12vw,54px)}
+  .hero p{font-size:17px;line-height:1.55;max-width:34rem}
+  .hero .eyebrow{font-size:11px;letter-spacing:.2em}
   .hero .meta{gap:12px;margin-top:28px}
   .hero .meta div{width:100%}
   .cta-row{display:grid;grid-template-columns:1fr;gap:10px}
@@ -762,9 +781,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
   <div class="hero-overlay"></div>
   {% endif %}
   <div class="wrap inner">
-    <div class="eyebrow reveal">Portsmouth · Domestic & Commercial</div>
+    <div class="eyebrow reveal">Portsmouth & nearby</div>
     <h1 class="reveal">All trades,<br><em>one trusted team.</em></h1>
-    <p class="reveal">From a leaking tap to a full bathroom, kitchen, patio or renovation — A&amp;J Property Maintenance Solutions handles it all, finished to a high standard across {{ b.area_line }}.</p>
+    <p class="reveal">Bathrooms, kitchens, patios, decorating and repairs — tidy property maintenance finished properly across Portsmouth and nearby areas.</p>
     <div class="cta-row reveal">
       <button class="btn btn-gold" onclick="openChat()">Get a free quote
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
