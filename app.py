@@ -467,12 +467,143 @@ fine if they decline some — but you must have ASKED each one. Do NOT add
 [[READY]] just because they gave a number. [[READY]] is a hidden tag stripped
 automatically — never shown to the customer. Put it on its own line at the very
 end of the final wrap-up message only.
+
+MEMORY RULE: Before every reply, look at the whole conversation. Never ask for
+something the customer has already answered or already uploaded. If a customer
+gives a phone number or email near the end, either ask the next missing checklist
+question or wrap up — do not restart from the first question.
 """
 
 all_conversations = {}
 notified_sessions = set()
 chat_activity = {}
 session_images = {}
+
+
+SERVICE_WORDS = re.compile(
+    r"\b(bathroom|kitchen|bedroom|room|paint|painting|decorate|decorating|"
+    r"wallpaper|tiling|tile|floor|flooring|patio|paving|garden|fence|"
+    r"fencing|driveway|plumbing|electrical|repair|repairs|maintenance)\b",
+    re.I,
+)
+SCOPE_WORDS = re.compile(
+    r"\b(room|rooms|bedroom|bedrooms|bathroom|kitchen|small|medium|large|"
+    r"m2|sqm|wall|walls|ceiling|ceilings|floor|floors|whole|part|refit)\b",
+    re.I,
+)
+PROPERTY_WORDS = re.compile(r"\b(domestic|commercial|home|house|flat|office|shop|restaurant|rental)\b", re.I)
+BUDGET_DECLINE_RE = re.compile(r"\b(not sure|unsure|don't know|dont know|rather not|no budget|not yet)\b", re.I)
+
+
+def _after_assistant_question(conv, patterns):
+    """Return the first customer reply after an assistant asked one of patterns."""
+    asked = False
+    for msg in conv:
+        role = msg.get("role")
+        text = msg.get("content", "")
+        if role == "assistant" and any(p in text.lower() for p in patterns):
+            asked = True
+            continue
+        if asked and role == "user" and text.strip():
+            return text.strip()
+    return None
+
+
+def _conversation_status(conv, session_id):
+    user_text = _customer_text(conv)
+    all_text = " ".join(m.get("content", "") for m in conv)
+    budget_answer = _after_assistant_question(conv, ("budget",))
+    urgency_answer = _after_assistant_question(conv, ("how soon", "urgent", "urgency", "hoping to get this done"))
+    name_answer = _after_assistant_question(conv, ("name",))
+
+    return {
+        "job": bool(SERVICE_WORDS.search(user_text)),
+        "scope": bool(SCOPE_WORDS.search(user_text)),
+        "property": bool(PROPERTY_WORDS.search(user_text)),
+        "photo": bool(session_images.get(session_id)) or "attached a photo" in all_text.lower()
+                 or "paperclip" in all_text.lower() or "arrange a visit" in all_text.lower(),
+        "budget": bool(budget_answer and (re.search(r"\d", budget_answer) or BUDGET_DECLINE_RE.search(budget_answer))),
+        "urgency": bool(urgency_answer),
+        "name": bool(name_answer and re.search(r"[A-Za-z]{2,}", name_answer)),
+        "postcode": bool(find_postcode(conv)),
+        "contact": has_contact_info(conv),
+    }
+
+
+def _next_missing_item(status):
+    labels = [
+        ("job", "job/work wanted"),
+        ("scope", "rough size or scope"),
+        ("property", "domestic or commercial property"),
+        ("photo", "photos or offer of a visit"),
+        ("budget", "rough budget"),
+        ("urgency", "preferred timing or urgency"),
+        ("name", "customer name"),
+        ("postcode", "postcode or area"),
+        ("contact", "phone number or email"),
+    ]
+    for key, label in labels:
+        if not status.get(key):
+            return label
+    return "done"
+
+
+def _chat_memory_hint(conv, session_id):
+    status = _conversation_status(conv, session_id)
+    next_item = _next_missing_item(status)
+    facts = ", ".join(f"{k}={'yes' if v else 'no'}" for k, v in status.items())
+    if next_item == "done":
+        action = (
+            "All required lead details are present. Wrap up warmly, say the enquiry "
+            f"has been sent to {BUSINESS['owner']}, and add [[READY]] on its own line."
+        )
+    else:
+        action = (
+            f"The next missing item is: {next_item}. Ask only for that. Do not restart "
+            "the conversation and do not ask again for anything marked yes."
+        )
+    return (
+        "Conversation memory/checklist for this exact chat:\n"
+        f"{facts}\n"
+        f"{action}"
+    )
+
+
+def _fixed_next_question(next_item):
+    questions = {
+        "job/work wanted": "What's the job you need help with?",
+        "rough size or scope": "Roughly how big is it, or what parts need doing?",
+        "domestic or commercial property": "Is it for your home or a commercial property?",
+        "photos or offer of a visit": (
+            "Got a couple of photos? Pop them in with the paperclip, it really helps us quote. "
+            "Or we can arrange a visit."
+        ),
+        "rough budget": (
+            "Do you have a rough budget in mind? It's fine if not — it just helps us quote properly."
+        ),
+        "preferred timing or urgency": "How soon are you hoping to get this done?",
+        "customer name": "What's your name, please?",
+        "postcode or area": "What's your postcode or area?",
+        "phone number or email": "What's the best phone number or email for you?",
+    }
+    return questions.get(next_item)
+
+
+def _reply_repeats_answered_item(reply, status):
+    text = reply.lower()
+    repeated_checks = [
+        ("job", ("what's the job", "what is the job", "bathroom, kitchen", "something outside")),
+        ("scope", ("how big", "roughly how big", "how many", "approximate size")),
+        ("property", ("domestic or commercial", "home or a commercial")),
+        ("photo", ("got a couple of photos", "pop them in", "paperclip", "send photo", "send them")),
+        ("budget", ("rough budget", "budget in mind")),
+        ("urgency", ("how soon", "urgent", "when are you hoping")),
+        ("name", ("what's your name", "your name")),
+        ("postcode", ("postcode", "area")),
+        ("contact", ("phone number", "email", "best contact")),
+    ]
+    return any(status.get(key) and any(phrase in text for phrase in phrases)
+               for key, phrases in repeated_checks)
 
 
 def _decode_image_data_url(data_url):
@@ -1216,9 +1347,13 @@ def chat_endpoint():
     chat_activity[session_id] = recent
 
     conversation.append({"role": "user", "content": user_message})
+    status = _conversation_status(conversation, session_id)
+    next_item = _next_missing_item(status)
     try:
+        messages = list(conversation)
+        messages.append({"role": "system", "content": _chat_memory_hint(conversation, session_id)})
         response = client_chat(
-            model="llama-3.3-70b-versatile", messages=conversation, max_tokens=256, timeout=20)
+            model="llama-3.3-70b-versatile", messages=messages, max_tokens=256, timeout=20)
         ai_reply = response.choices[0].message.content
     except Exception as e:
         print(f"Chat completion failed: {e}")
@@ -1227,6 +1362,11 @@ def chat_endpoint():
 
     lead_ready = bool(re.search(r"\[\[?\s*READY\s*\]?\]", ai_reply, re.I))
     ai_reply = re.sub(r"\[\[?\s*READY\s*\]?\]", "", ai_reply).replace("[LEAD_CAPTURED]", "").strip()
+    if next_item == "done":
+        lead_ready = True
+    if next_item != "done" and _reply_repeats_answered_item(ai_reply, status):
+        ai_reply = _fixed_next_question(next_item) or ai_reply
+        lead_ready = False
     if not ai_reply:
         ai_reply = ("Thanks — that's everything we need for now. A&J will be in touch shortly "
                     "to arrange your free quote.")
