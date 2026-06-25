@@ -1333,27 +1333,6 @@ def sitemap():
 def robots():
     return Response("User-agent: *\nAllow: /\n", mimetype="text/plain")
 
-
-# --- TEMPORARY email debug route. Delete once leads are arriving. ---
-# Visit  /_debug/email?key=ajtest         to see config
-# Visit  /_debug/email?key=ajtest&send=1  to fire a real test email
-@app.route("/_debug/email")
-def debug_email():
-    if request.args.get("key") != os.environ.get("DEBUG_KEY", "ajtest"):
-        return Response("not found", status=404)
-    info = {
-        "resend_key_set": bool(RESEND_API_KEY),
-        "resend_key_tail": ("..." + RESEND_API_KEY[-4:]) if RESEND_API_KEY else None,
-        "notify_to": NOTIFY_TO,
-        "mail_from": MAIL_FROM,
-    }
-    if request.args.get("send") == "1":
-        info["send_result"] = _post_resend(
-            "A&J website — test email",
-            "If you can read this, lead emails are working. You can delete the debug route now.")
-    return jsonify(info)
-
-
 @app.route("/chat", methods=["POST"])
 def chat_endpoint():
     session_id = session.get("session_id") or str(uuid.uuid4())
