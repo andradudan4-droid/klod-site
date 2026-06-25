@@ -150,16 +150,26 @@ to the `PORTFOLIO` list in `app.py`:
 `cat` must be one of: Bathrooms, Kitchens, Decorating, Paving & Gardens, Building,
 Joinery, Exterior, Electrical.
 
-**Videos** — put `clip.mp4` in `static/videos/`, then add to the `VIDEOS` list:
+**Videos** — put `clip.mp4` in `static/videos/`, then either:
 
+*Hero background video (the big wow):* set near the top of `app.py`
+```python
+HERO_VIDEO = "static/videos/hero-reel.mp4"
+```
+Use one strong landscape clip (~10–25s); it plays muted and looped behind the
+headline. Leave it `""` to keep the photo background.
+
+*Video reel section:* add to the `VIDEOS` list (the section stays hidden until
+there's at least one):
 ```python
 {"src": "static/videos/clip.mp4",
  "poster": P+"bathroom-black-marble-bath.webp",   # thumbnail (optional)
  "cap": "Bathroom reveal"},
 ```
-The whole video section stays hidden until `VIDEOS` has at least one entry. (Tip:
-Instagram clips need downloading first — once you have the `.mp4` files, just drop
-them in.)
+
+To get his clips off Instagram: open the post and use a saver site/app to
+download the `.mp4`, or export the originals from his phone — then drop the files
+into `static/videos/`.
 
 **Google reviews** — add each one to the `REVIEWS` list:
 
@@ -179,4 +189,3 @@ Then `git add . && git commit -m "..." && git push` and it's live.
   worked through the questions — so you won't get half-finished enquiries.
 - `MAX_IMAGES_PER_SESSION`, rate limits and the bot's tone are all near the top of
   `app.py` if you ever want to tweak them.
-# klod-site

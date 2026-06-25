@@ -131,11 +131,24 @@ FILTERS = ["All", "Bathrooms", "Kitchens", "Decorating", "Paving & Gardens",
            "Building", "Joinery", "Exterior", "Electrical"]
 
 # ---------------------------------------------------------------------------
+# HERO VIDEO  --  the single biggest "wow" lever. Drop one of his best clips
+# (landscape, ~10-25s) in static/videos/ and set the filename below. It plays
+# muted, looped, full-screen behind the headline. Leave "" to use a photo.
+# Example:  HERO_VIDEO = "static/videos/hero-reel.mp4"
+# ---------------------------------------------------------------------------
+HERO_VIDEO = ""
+
+# ---------------------------------------------------------------------------
 # VIDEOS  --  add clips to static/videos/ then list them here. Leave empty to
 # hide the whole section. Example:
 #   {"src": "static/videos/bathroom-reveal.mp4", "poster": P+"bathroom-black-marble-bath.webp", "cap": "Bathroom reveal"}
 # ---------------------------------------------------------------------------
-VIDEOS = []
+VIDEOS = [
+    {"src": "static/videos/reel-wallpaper.mp4",
+     "poster": P+"reel-wallpaper-poster.jpg",
+     "cap": "Feature wall — wallpaper hung start to finish"},
+    # Re-upload the other clips and add them here the same way.
+]
 
 # ---------------------------------------------------------------------------
 # REVIEWS  --  the two below are the real reviews from the current site.
@@ -554,6 +567,15 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
 .hero .meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:40px;color:var(--mut);font-size:13.5px;letter-spacing:.02em}
 .hero .meta b{color:var(--cream);font-weight:600}
+/* hero video background */
+.hero.has-video::before{display:none}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hero-overlay{position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(8,7,6,.55),rgba(8,7,6,.82)),
+  radial-gradient(120% 80% at 80% 0%,rgba(212,175,55,.18),transparent 55%)}
+/* scroll progress */
+.progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;
+  background:linear-gradient(90deg,var(--gold),var(--gold-soft));transition:width .1s linear}
 
 /* trust strip */
 .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink2)}
@@ -600,11 +622,19 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
 .lb .x{top:20px;right:20px}.lb .prev{left:20px;top:50%;transform:translateY(-50%)}.lb .next{right:20px;top:50%;transform:translateY(-50%)}
 @media(max-width:600px){.lb .prev,.lb .next{display:none}}
 
-/* videos */
-.vid-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:38px}
-.vid{border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--ink2)}
-.vid video{width:100%;display:block;background:#000}
-.vid p{padding:12px 16px;font-size:13.5px;color:var(--mut)}
+/* reels (vertical) */
+.reel-grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:42px}
+.reel{position:relative;width:265px;aspect-ratio:9/16;border-radius:24px;overflow:hidden;border:1px solid var(--line);
+  background:#000;cursor:pointer;box-shadow:0 26px 60px -28px rgba(0,0,0,.85);transition:transform .3s}
+.reel:hover{transform:translateY(-5px)}
+.reel video{width:100%;height:100%;object-fit:cover;display:block}
+.reel .cap{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 16px;font-size:13px;color:#f3ecdd;z-index:2;
+  background:linear-gradient(transparent,rgba(6,5,4,.92))}
+.reel .sound{position:absolute;top:12px;right:12px;z-index:3;width:38px;height:38px;border-radius:50%;pointer-events:none;
+  background:rgba(7,6,5,.55);border:1px solid var(--line);color:#fff;display:grid;place-items:center;backdrop-filter:blur(5px)}
+.reel .sound svg{width:18px;height:18px}
+.reel .badge{position:absolute;top:13px;left:13px;z-index:3;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);background:rgba(7,6,5,.55);border:1px solid var(--line);padding:5px 10px;border-radius:999px;backdrop-filter:blur(5px)}
 
 /* why */
 .why{background:var(--ink2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -681,6 +711,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
 </head>
 <body>
 
+<div class="progress" id="progress"></div>
+
 <nav>
   <div class="wrap bar">
     <a class="brand" href="#top">
@@ -700,7 +732,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
   </div>
 </nav>
 
-<header class="hero" id="top">
+<header class="hero {{ 'has-video' if hero_video else '' }}" id="top">
+  {% if hero_video %}
+  <video class="hero-bg" autoplay muted loop playsinline preload="auto"
+         poster="{{ url_for('static', filename='images/portfolio/bathroom-black-marble-bath.webp') }}">
+    <source src="{{ url_for('static', filename=hero_video[7:]) }}" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  {% endif %}
   <div class="wrap inner">
     <div class="eyebrow reveal">Portsmouth · Domestic & Commercial</div>
     <h1 class="reveal">All trades,<br><em>one trusted team.</em></h1>
@@ -763,13 +802,19 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
 {% if videos %}
 <section class="sec" id="videos" style="padding-top:0">
   <div class="wrap">
-    <div class="eyebrow reveal">In motion</div>
-    <h2 class="title reveal">Project videos</h2>
-    <div class="vid-grid">
+    <div class="eyebrow reveal">Watch us work</div>
+    <h2 class="title reveal">Straight from the job</h2>
+    <p class="lede reveal">Real clips from real jobs around Portsmouth. They play as you scroll — tap any one for sound.</p>
+    <div class="reel-grid">
       {% for v in videos %}
-      <div class="vid reveal"><video controls preload="metadata" {% if v.poster %}poster="{{ url_for('static', filename=v.poster[7:]) }}"{% endif %}>
-        <source src="{{ url_for('static', filename=v.src[7:]) }}" type="video/mp4"></video>
-        {% if v.cap %}<p>{{ v.cap }}</p>{% endif %}</div>
+      <figure class="reel reveal" onclick="toggleSound(this)">
+        <span class="badge">Reel</span>
+        <span class="sound" id="snd{{ loop.index }}"></span>
+        <video muted loop playsinline preload="metadata" {% if v.poster %}poster="{{ url_for('static', filename=v.poster[7:]) }}"{% endif %}>
+          <source src="{{ url_for('static', filename=v.src[7:]) }}" type="video/mp4">
+        </video>
+        {% if v.cap %}<figcaption class="cap">{{ v.cap }}</figcaption>{% endif %}
+      </figure>
       {% endfor %}
     </div>
   </div>
@@ -877,8 +922,29 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
 </div>
 
 <script>
+// reels: autoplay muted when in view, tap for sound
+const ICON_MUTE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>';
+const ICON_SOUND='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>';
+document.querySelectorAll('.reel .sound').forEach(s=>s.innerHTML=ICON_MUTE);
+const reelVids=[...document.querySelectorAll('.reel video')];
+if('IntersectionObserver' in window){
+  const rio=new IntersectionObserver((es)=>{es.forEach(e=>{
+    if(e.isIntersecting){e.target.play().catch(()=>{})}else{e.target.pause()}})},{threshold:.55});
+  reelVids.forEach(v=>rio.observe(v));
+}
+function toggleSound(fig){const v=fig.querySelector('video');const btn=fig.querySelector('.sound');
+  const unmute=v.muted;
+  document.querySelectorAll('.reel').forEach(o=>{const ov=o.querySelector('video');
+    if(ov!==v){ov.muted=true;o.querySelector('.sound').innerHTML=ICON_MUTE}});
+  v.muted=!unmute;btn.innerHTML=v.muted?ICON_MUTE:ICON_SOUND;v.play().catch(()=>{});}
+
 document.getElementById('yr').textContent = new Date().getFullYear();
 function closeNav(){document.getElementById('nl').classList.remove('open')}
+
+// scroll progress bar
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const sc=h.scrollTop/(h.scrollHeight-h.clientHeight);prog.style.width=(sc*100)+'%'},{passive:true});
 
 // scroll reveal
 const io = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
@@ -956,7 +1022,7 @@ def home():
     ensure_session()
     return render_template_string(PAGE, b=BUSINESS, services=SERVICES,
                                   portfolio=PORTFOLIO, filters=FILTERS,
-                                  videos=VIDEOS, reviews=REVIEWS)
+                                  videos=VIDEOS, reviews=REVIEWS, hero_video=HERO_VIDEO)
 
 
 @app.route("/sitemap.xml")
