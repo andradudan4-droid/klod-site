@@ -31,7 +31,7 @@ def client_chat(**kwargs):
 BUSINESS = {
     "name": "A&J Property Maintenance Solutions",
     "short": "A&J",
-    "owner": "the A&J team",          # <-- put the owner's first name here if you want a personal touch
+    "owner": "Angel",                 # owner's first name (from the reviews) — change if needed
     "phone_display": "07378 571162",
     "phone_e164": "447378571162",     # used for tel: and WhatsApp links
     "email_public": "info@ajpropertymaintenanceltd.co.uk",  # shown on the site
@@ -155,11 +155,29 @@ VIDEOS = [
 # Paste your Google reviews in the same format and they'll appear automatically.
 # ---------------------------------------------------------------------------
 REVIEWS = [
-    {"text": "Fantastic work, informative all the way. Explaining the whole way through. Very polite and clean. Will be using again.",
+    {"text": "AJ installed a shower in a very small bathroom — they came up with some very good ideas and did a fantastic job. Clean and tidy work, always on time. Highly recommend.",
+     "name": "Dennis Eadie", "where": "Google review", "tags": "Responsiveness · Quality · Professionalism · Value"},
+    {"text": "Angel and his team have done a lot of work for us over the last few months on our house and garden. They installed a new kitchen and bathroom and renovated all the rooms in the house to a very high standard.",
+     "name": "Kathryn Woolmer", "where": "Google review"},
+    {"text": "AJ are amazing — they replaced a bathroom and kitchen in my flat. I am so pleased with the work they've done. Very trustworthy and they really know their business inside out. Efficient, conscientious and really lovely people. I can't praise them any higher.",
+     "name": "Stephanie Head", "where": "Local Guide · Google review"},
+    {"text": "Angel refitted an en-suite shower room for us. It had originally been fitted with some 'interesting' plumbing that Angel had to work his way through to get to a clean, tidy room. He pays attention to the finer details, so you know you're going to get a good job done by him.",
+     "name": "Nikki Morris", "where": "Google review"},
+    {"text": "AJ have completed several jobs for us over the years. They're reliable, turn up on time and are tidy. The attention to detail is what stands them out from the rest. We recently had a shower room completed — Angel's knowledge of materials, suggestions and management of the project was invaluable.",
+     "name": "The Wight Place", "where": "Google review"},
+    {"text": "We were very pleased with the work undertaken by AJ. They carried out a range of work in our home, the main element being complete removal of our old, leaking bathroom and replacement with new.",
+     "name": "David White", "where": "Google review"},
+    {"text": "Angel repaired my bathroom and cupboard ceilings, replastering and painting to complete the job. He was very professional, stayed in contact at every point, arrived on time and was very polite.",
+     "name": "Terrizeta May", "where": "Google review"},
+    {"text": "The job was well done and all my questions were answered. I'm thankful for the in-depth explanations on my kitchen renovation.",
+     "name": "Matthew Liu", "where": "Local Guide · Google review"},
+    {"text": "All work was excellent. Everything was just what we wanted.",
+     "name": "Jill Marshall", "where": "Google review", "tags": "Quality · Professionalism · Value"},
+    # The two below came from the current Portsmouth website.
+    {"text": "Fantastic work, informative all the way — explaining the whole way through. Very polite and clean. Will be using again.",
      "name": "Verified customer", "where": "Portsmouth, PO14"},
-    {"text": "Listened to my requirements, told me what they would do and any prep work first. Allotted a time after discussion, then did exactly what they said. There was a lot of broken concrete and earth, but everything was sheeted, and on completion all the rubbish was removed and the lawn left in good condition. Polite, cheerful and very hard working — they even returned early next morning to damp down the path. Definitely would use again.",
+    {"text": "Listened to my requirements, told me what they'd do and any prep work first, then did exactly what they said. Lots of broken concrete and earth, but everything was sheeted and all the rubbish removed on completion, with the lawn left in good condition. Polite, cheerful and hard working — they even returned early next morning to damp down the path. Definitely would use again.",
      "name": "Verified customer", "where": "Portsmouth, PO14"},
-    # {"text": "Paste a Google review here", "name": "Customer name", "where": "Area"},
 ]
 
 # ===========================================================================
@@ -650,6 +668,7 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
 .rev p{font-size:15px;color:#ece4d3;line-height:1.65}
 .rev .who{margin-top:16px;font-size:13px;color:var(--mut);letter-spacing:.02em}
 .rev .who b{color:var(--cream);font-weight:600}
+.rev .rtags{margin-top:14px;font-size:11.5px;letter-spacing:.05em;color:var(--gold);text-transform:uppercase}
 
 /* contact */
 .contact{background:radial-gradient(120% 90% at 50% -10%,rgba(212,175,55,.12),transparent 60%),var(--ink)}
@@ -841,6 +860,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
     <div class="rev-grid">
       {% for r in reviews %}
       <div class="rev reveal"><div class="stars">★★★★★</div><p>“{{ r.text }}”</p>
+        {% if r.tags %}<div class="rtags">{{ r.tags }}</div>{% endif %}
         <div class="who"><b>{{ r.name }}</b> · {{ r.where }}</div></div>
       {% endfor %}
     </div>
