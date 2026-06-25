@@ -534,7 +534,8 @@ h2.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(28px,4.2vw
 .lede{color:var(--mut);max-width:620px;font-size:clamp(15px,1.8vw,17px)}
 
 /* reveal */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal{opacity:1;transform:none;transition:opacity .7s ease,transform .7s ease}
+.js .reveal{opacity:0;transform:translateY(22px)}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 
@@ -745,11 +746,21 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
   .crow{align-items:flex-start}
   .chat-btn{left:76px;right:14px;bottom:16px;justify-content:center;padding:13px 14px}
   .wa{left:14px;bottom:16px;width:50px;height:50px}
-  .chat-panel{right:10px;left:10px;bottom:10px;width:auto;height:min(640px,calc(100vh - 20px));border-radius:16px}
+  .chat-panel{inset:0;z-index:200;width:100vw;height:100vh;height:100dvh;max-height:none;border:0;border-radius:0}
+  .chat-head{padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));gap:10px;flex:none}
+  .chat-head img{width:32px;height:32px}
+  .chat-head .s{display:none}
+  .chat-head .close{font-size:28px;line-height:1;color:#f6f1e7}
+  .msgs{padding:12px;gap:10px;min-height:0}
+  .msg{max-width:88%;font-size:14px;padding:10px 12px}
+  .chat-in{padding:10px 8px;padding-bottom:max(10px,env(safe-area-inset-bottom));gap:6px;flex:none}
+  .chat-in input[type=text]{min-width:0;padding:10px 12px;font-size:16px}
+  .iconbtn{width:38px;height:38px}
 }
 </style>
 </head>
 <body>
+<script>if('IntersectionObserver' in window){document.documentElement.classList.add('js')}</script>
 
 <div class="progress" id="progress"></div>
 
@@ -988,8 +999,12 @@ addEventListener('scroll',()=>{const h=document.documentElement;
   const sc=h.scrollTop/(h.scrollHeight-h.clientHeight);prog.style.width=(sc*100)+'%'},{passive:true});
 
 // scroll reveal
-const io = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+if('IntersectionObserver' in window){
+  const io = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+}else{
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+}
 
 // filters
 document.querySelectorAll('.filters button').forEach(btn=>{
@@ -1017,10 +1032,10 @@ document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classL
 
 // chat
 let greeted=false;
-function openChat(){document.getElementById('chatPanel').classList.add('open');document.getElementById('chatBtn').style.display='none';
+function openChat(){document.getElementById('chatPanel').classList.add('open');document.getElementById('chatBtn').style.display='none';document.body.style.overflow='hidden';
   if(!greeted){greeted=true;addMsg("Hi! 👋 I'm here for A&J Property Maintenance. What can we help you with — bathroom, kitchen, decorating, something outside?","bot")}
   document.getElementById('chatInput').focus()}
-function closeChat(){document.getElementById('chatPanel').classList.remove('open');document.getElementById('chatBtn').style.display='flex'}
+function closeChat(){document.getElementById('chatPanel').classList.remove('open');document.getElementById('chatBtn').style.display='flex';document.body.style.overflow=''}
 function addMsg(t,who){const m=document.createElement('div');m.className='msg '+who;m.textContent=t;
   const box=document.getElementById('msgs');box.appendChild(m);box.scrollTop=box.scrollHeight}
 function addImg(src){const m=document.createElement('div');m.className='msg img user';const i=document.createElement('img');i.src=src;m.appendChild(i);
