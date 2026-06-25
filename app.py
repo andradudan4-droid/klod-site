@@ -31,7 +31,7 @@ def client_chat(**kwargs):
 BUSINESS = {
     "name": "A&J Property Maintenance Solutions",
     "short": "A&J",
-    "owner": "Angel",                 # owner's first name (from the reviews) — change if needed
+    "owner": "the A&J team",          # put the owner's first name here for a personal sign-off
     "phone_display": "07378 571162",
     "phone_e164": "447378571162",     # used for tel: and WhatsApp links
     "email_public": "info@ajpropertymaintenanceltd.co.uk",  # shown on the site
@@ -97,35 +97,32 @@ SERVICES = [
 # ---------------------------------------------------------------------------
 P = "static/images/portfolio/"
 PORTFOLIO = [
-    {"img": P+"bathroom-black-marble-bath.webp",      "cat": "Bathrooms",        "cap": "Black marble bathroom, freestanding bath & brushed-gold brassware"},
-    {"img": P+"bathroom-black-marble-vanity.webp",    "cat": "Bathrooms",        "cap": "Floating double vanity in a full marble en-suite"},
-    {"img": P+"bathroom-herringbone-gold.webp",       "cat": "Bathrooms",        "cap": "Charcoal herringbone tiling with gold shower set"},
-    {"img": P+"bathroom-teal-herringbone.webp",       "cat": "Bathrooms",        "cap": "Teal herringbone walk-in shower & solid-oak vanity"},
-    {"img": P+"bathroom-freestanding-screen.jpg",     "cat": "Bathrooms",        "cap": "Freestanding bath with crittall-style shower screen"},
-    {"img": P+"bathroom-monochrome-tile.webp",        "cat": "Bathrooms",        "cap": "Monochrome patterned feature tiling"},
-    {"img": P+"bathroom-stone-feature.webp",          "cat": "Bathrooms",        "cap": "Exposed stone feature wall bathroom"},
-    {"img": P+"bathroom-travertine.webp",             "cat": "Bathrooms",        "cap": "Warm travertine tiled bathroom"},
-    {"img": P+"kitchen-white-shaker.webp",            "cat": "Kitchens",         "cap": "White shaker kitchen with quartz worktops"},
-    {"img": P+"kitchen-grey-white.jpg",               "cat": "Kitchens",         "cap": "Two-tone fitted kitchen"},
-    {"img": P+"decor-palm-feature-wall.webp",         "cat": "Decorating",       "cap": "Palm-print feature wall & fresh decor"},
-    {"img": P+"decor-tropical-wallpaper.jpg",         "cat": "Decorating",       "cap": "Bold tropical wallpaper hang"},
-    {"img": P+"decor-pink-jungle-bedroom.jpg",        "cat": "Decorating",       "cap": "Jungle-print bedroom with panelled dado"},
-    {"img": P+"decor-blue-damask-hall.jpg",           "cat": "Decorating",       "cap": "Blue damask wallpaper & crisp white woodwork"},
-    {"img": P+"decor-marble-panel-hall.jpg",          "cat": "Decorating",       "cap": "Marble-effect wall panelling, entrance hall"},
-    {"img": P+"decor-grey-feature-wall.jpg",          "cat": "Decorating",       "cap": "Smooth grey feature wall, neatly cut in"},
-    {"img": P+"bedroom-period-beams.webp",            "cat": "Decorating",       "cap": "Period bedroom restoration with exposed beams"},
-    {"img": P+"joinery-oak-worktop.jpg",              "cat": "Joinery",          "cap": "Solid oak worktop & bespoke cabinetry"},
-    {"img": P+"decor-slat-panel-wall.jpg",            "cat": "Joinery",          "cap": "Oak slat acoustic wall panelling"},
-    {"img": P+"paving-porcelain-steps.jpg",           "cat": "Paving & Gardens", "cap": "Porcelain paving with brick-faced steps"},
-    {"img": P+"paving-sandstone-steps.jpg",           "cat": "Paving & Gardens", "cap": "Indian sandstone patio & steps"},
-    {"img": P+"paving-patio-brick-edge.jpg",          "cat": "Paving & Gardens", "cap": "Riven patio with brick-edge detail"},
-    {"img": P+"paving-grey-stone.jpg",                "cat": "Paving & Gardens", "cap": "Grey porcelain plank paving"},
-    {"img": P+"groundwork-concrete-base.jpg",         "cat": "Building",         "cap": "Reinforced concrete base, poured & finished"},
-    {"img": P+"groundwork-retaining-wall.jpg",        "cat": "Building",         "cap": "Concrete retaining wall & new paving"},
-    {"img": P+"loft-conversion-structure.jpg",        "cat": "Building",         "cap": "Loft structural works"},
-    {"img": P+"fencing-new-panels.jpg",               "cat": "Exterior",         "cap": "New close-board fencing on concrete posts"},
-    {"img": P+"exterior-render-frontage.jpg",         "cat": "Exterior",         "cap": "Restored & repainted Victorian frontage"},
-    {"img": P+"electrical-first-fix.jpg",             "cat": "Electrical",       "cap": "First-fix wiring & wall chasing"},
+    {"img": P+"bathroom-beige-suite.webp",        "cat": "Bathrooms",        "cap": "Full bathroom — freestanding bath & walk-in shower"},
+    {"img": P+"bathroom-concrete-vanity.webp",    "cat": "Bathrooms",        "cap": "Concrete-effect vanity with vessel basin"},
+    {"img": P+"bathroom-freestanding-screen.jpg", "cat": "Bathrooms",        "cap": "Freestanding bath with crittall-style screen"},
+    {"img": P+"shower-woodeffect.webp",           "cat": "Bathrooms",        "cap": "Wood-effect tiled shower enclosure"},
+    {"img": P+"kitchen-grey-white.jpg",           "cat": "Kitchens",         "cap": "Two-tone fitted kitchen"},
+    {"img": P+"decor-tropical-wallpaper.jpg",     "cat": "Decorating",       "cap": "Bold tropical wallpaper hang"},
+    {"img": P+"decor-pink-jungle-bedroom.jpg",    "cat": "Decorating",       "cap": "Jungle-print bedroom with panelled dado"},
+    {"img": P+"decor-blue-damask-hall.jpg",       "cat": "Decorating",       "cap": "Blue damask wallpaper & crisp white woodwork"},
+    {"img": P+"decor-marble-panel-hall.jpg",      "cat": "Decorating",       "cap": "Marble-effect wall panelling, entrance hall"},
+    {"img": P+"decor-grey-feature-wall.jpg",      "cat": "Decorating",       "cap": "Smooth grey feature wall, neatly cut in"},
+    {"img": P+"joinery-oak-worktop.jpg",          "cat": "Joinery",          "cap": "Solid oak worktop & bespoke cabinetry"},
+    {"img": P+"decor-slat-panel-wall.jpg",        "cat": "Joinery",          "cap": "Oak slat acoustic wall panelling"},
+    {"img": P+"paving-sandstone-backdoor.webp",   "cat": "Paving & Gardens", "cap": "Indian sandstone patio by the back door"},
+    {"img": P+"paving-porcelain-brick-step.webp", "cat": "Paving & Gardens", "cap": "Porcelain patio with brick-faced step"},
+    {"img": P+"paving-porcelain-steps.jpg",       "cat": "Paving & Gardens", "cap": "Porcelain paving with brick-faced steps"},
+    {"img": P+"paving-sandstone-steps.jpg",       "cat": "Paving & Gardens", "cap": "Indian sandstone patio & steps"},
+    {"img": P+"paving-patio-brick-edge.jpg",      "cat": "Paving & Gardens", "cap": "Riven patio with brick-edge detail"},
+    {"img": P+"paving-grey-stone.jpg",            "cat": "Paving & Gardens", "cap": "Grey porcelain plank paving"},
+    {"img": P+"groundwork-concrete-base.jpg",     "cat": "Building",         "cap": "Reinforced concrete base, poured & finished"},
+    {"img": P+"groundwork-retaining-wall.jpg",    "cat": "Building",         "cap": "Concrete retaining wall & new paving"},
+    {"img": P+"loft-conversion-structure.jpg",    "cat": "Building",         "cap": "Loft structural works"},
+    {"img": P+"fencing-closeboard-sunny.webp",    "cat": "Exterior",         "cap": "New close-board fencing on concrete posts"},
+    {"img": P+"fencing-run-grey.webp",            "cat": "Exterior",         "cap": "Fencing replaced — concrete posts & gravel boards"},
+    {"img": P+"fencing-new-panels.jpg",           "cat": "Exterior",         "cap": "New fence run, larch-lap panels"},
+    {"img": P+"exterior-render-frontage.jpg",     "cat": "Exterior",         "cap": "Restored & repainted frontage"},
+    {"img": P+"electrical-first-fix.jpg",         "cat": "Electrical",       "cap": "First-fix wiring & wall chasing"},
 ]
 FILTERS = ["All", "Bathrooms", "Kitchens", "Decorating", "Paving & Gardens",
            "Building", "Joinery", "Exterior", "Electrical"]
@@ -144,10 +141,18 @@ HERO_VIDEO = ""
 #   {"src": "static/videos/bathroom-reveal.mp4", "poster": P+"bathroom-black-marble-bath.webp", "cap": "Bathroom reveal"}
 # ---------------------------------------------------------------------------
 VIDEOS = [
+    {"src": "static/videos/reel-bathroom-transformation.mp4",
+     "poster": P+"reel-bathroom-poster.jpg",
+     "cap": "Old bathroom to modern design — full transformation"},
     {"src": "static/videos/reel-wallpaper.mp4",
      "poster": P+"reel-wallpaper-poster.jpg",
      "cap": "Feature wall — wallpaper hung start to finish"},
-    # Re-upload the other clips and add them here the same way.
+    {"src": "static/videos/reel-porcelain-patio.mp4",
+     "poster": P+"reel-patio-poster.jpg",
+     "cap": "Grey porcelain patio, freshly laid"},
+    {"src": "static/videos/reel-patio-laying.mp4",
+     "poster": P+"reel-laying-poster.jpg",
+     "cap": "New patio going down — base to finish"},
 ]
 
 # ---------------------------------------------------------------------------
@@ -155,29 +160,12 @@ VIDEOS = [
 # Paste your Google reviews in the same format and they'll appear automatically.
 # ---------------------------------------------------------------------------
 REVIEWS = [
-    {"text": "AJ installed a shower in a very small bathroom — they came up with some very good ideas and did a fantastic job. Clean and tidy work, always on time. Highly recommend.",
-     "name": "Dennis Eadie", "where": "Google review", "tags": "Responsiveness · Quality · Professionalism · Value"},
-    {"text": "Angel and his team have done a lot of work for us over the last few months on our house and garden. They installed a new kitchen and bathroom and renovated all the rooms in the house to a very high standard.",
-     "name": "Kathryn Woolmer", "where": "Google review"},
-    {"text": "AJ are amazing — they replaced a bathroom and kitchen in my flat. I am so pleased with the work they've done. Very trustworthy and they really know their business inside out. Efficient, conscientious and really lovely people. I can't praise them any higher.",
-     "name": "Stephanie Head", "where": "Local Guide · Google review"},
-    {"text": "Angel refitted an en-suite shower room for us. It had originally been fitted with some 'interesting' plumbing that Angel had to work his way through to get to a clean, tidy room. He pays attention to the finer details, so you know you're going to get a good job done by him.",
-     "name": "Nikki Morris", "where": "Google review"},
-    {"text": "AJ have completed several jobs for us over the years. They're reliable, turn up on time and are tidy. The attention to detail is what stands them out from the rest. We recently had a shower room completed — Angel's knowledge of materials, suggestions and management of the project was invaluable.",
-     "name": "The Wight Place", "where": "Google review"},
-    {"text": "We were very pleased with the work undertaken by AJ. They carried out a range of work in our home, the main element being complete removal of our old, leaking bathroom and replacement with new.",
-     "name": "David White", "where": "Google review"},
-    {"text": "Angel repaired my bathroom and cupboard ceilings, replastering and painting to complete the job. He was very professional, stayed in contact at every point, arrived on time and was very polite.",
-     "name": "Terrizeta May", "where": "Google review"},
-    {"text": "The job was well done and all my questions were answered. I'm thankful for the in-depth explanations on my kitchen renovation.",
-     "name": "Matthew Liu", "where": "Local Guide · Google review"},
-    {"text": "All work was excellent. Everything was just what we wanted.",
-     "name": "Jill Marshall", "where": "Google review", "tags": "Quality · Professionalism · Value"},
-    # The two below came from the current Portsmouth website.
     {"text": "Fantastic work, informative all the way — explaining the whole way through. Very polite and clean. Will be using again.",
      "name": "Verified customer", "where": "Portsmouth, PO14"},
     {"text": "Listened to my requirements, told me what they'd do and any prep work first, then did exactly what they said. Lots of broken concrete and earth, but everything was sheeted and all the rubbish removed on completion, with the lawn left in good condition. Polite, cheerful and hard working — they even returned early next morning to damp down the path. Definitely would use again.",
      "name": "Verified customer", "where": "Portsmouth, PO14"},
+    # Add Angel's OWN Google reviews here once confirmed, same format:
+    # {"text": "...", "name": "Customer name", "where": "Google review"},
 ]
 
 # ===========================================================================
@@ -571,7 +559,7 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
 .hero{min-height:92vh;display:flex;align-items:center;position:relative;isolation:isolate}
 .hero::before{content:"";position:absolute;inset:0;z-index:-2;
   background:linear-gradient(180deg,rgba(8,7,6,.62),rgba(8,7,6,.86)),
-  url('{{ url_for('static', filename='images/portfolio/bathroom-black-marble-bath.webp') }}') center/cover}
+  url('{{ url_for('static', filename='images/portfolio/bathroom-beige-suite.webp') }}') center/cover}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 80% at 80% 0%,rgba(212,175,55,.16),transparent 55%)}
 .hero .inner{max-width:760px;padding:40px 0}
 .hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(40px,7vw,76px);line-height:1.02;margin:18px 0 18px;color:#fff;letter-spacing:-.01em}
@@ -754,7 +742,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
 <header class="hero {{ 'has-video' if hero_video else '' }}" id="top">
   {% if hero_video %}
   <video class="hero-bg" autoplay muted loop playsinline preload="auto"
-         poster="{{ url_for('static', filename='images/portfolio/bathroom-black-marble-bath.webp') }}">
+         poster="{{ url_for('static', filename='images/portfolio/bathroom-beige-suite.webp') }}">
     <source src="{{ url_for('static', filename=hero_video[7:]) }}" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
