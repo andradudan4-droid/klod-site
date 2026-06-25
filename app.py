@@ -702,6 +702,8 @@ nav .bar{display:flex;align-items:center;justify-content:space-between;height:68
 /* footer */
 footer{border-top:1px solid var(--line);background:var(--ink2);padding:34px 0;color:var(--mut);font-size:13px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+footer a{color:var(--gold-soft)}
+footer a:hover{color:var(--gold)}
 
 /* WhatsApp float */
 .wa{position:fixed;left:20px;bottom:22px;z-index:90;width:56px;height:56px;border-radius:50%;background:#25D366;
@@ -931,7 +933,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
 <footer>
   <div class="wrap">
     <div>© <span id="yr"></span> {{ b.name }} Ltd · {{ b.postcode }} Portsmouth</div>
-    <div>Built with care · Bathrooms · Kitchens · Decorating · Landscaping · Maintenance</div>
+    <div><a href="/privacy-policy">Privacy Policy</a> · Built with care · Bathrooms · Kitchens · Decorating · Landscaping · Maintenance</div>
   </div>
 </footer>
 
@@ -1072,6 +1074,89 @@ document.getElementById('fileIn').addEventListener('change',async e=>{const file
 </body></html>"""
 
 
+PRIVACY_PAGE = r"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy | {{ b.name }}</title>
+<meta name="description" content="Privacy policy for {{ b.name }}.">
+<link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0c0b09;--ink2:#15130f;--cream:#f6f1e7;--mut:#a89c86;--gold:#d4af37;--gold-soft:#ecd089;--line:rgba(212,175,55,.22)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--cream);font-family:'Inter',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-soft);text-decoration:none}
+a:hover{color:var(--gold)}
+.wrap{max-width:860px;margin:0 auto;padding:48px 22px 72px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:44px;color:var(--gold);font-family:'Fraunces',Georgia,serif;font-size:20px;font-weight:600}
+.brand img{width:42px;height:42px;border-radius:50%;border:1px solid var(--line)}
+.back{display:inline-flex;margin-bottom:22px;color:var(--gold-soft);font-size:14px}
+.eyebrow{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:600}
+h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(34px,7vw,58px);line-height:1.05;margin:12px 0 16px;color:#fff}
+h2{font-family:'Fraunces',Georgia,serif;font-size:24px;margin:34px 0 8px;color:#fff}
+p,li{color:#d8cfbc;font-size:16px}
+ul{padding-left:22px;margin:10px 0 0}
+.panel{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:30px}
+.small{font-size:14px;color:var(--mut);margin-top:8px}
+footer{border-top:1px solid var(--line);padding-top:24px;margin-top:42px;color:var(--mut);font-size:14px}
+@media(max-width:560px){.wrap{padding:34px 18px 56px}.panel{padding:20px}p,li{font-size:15px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="brand" href="/"><img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="A&J logo">A&amp;J Property Maintenance</a>
+  <a class="back" href="/">Back to home</a>
+  <div class="eyebrow">Privacy Policy</div>
+  <h1>How we handle your information</h1>
+  <p>This privacy policy explains how {{ b.name }} collects and uses information when you contact us through this website.</p>
+  <p class="small">Last updated: 25 June 2026</p>
+
+  <section class="panel">
+    <h2>Who we are</h2>
+    <p>{{ b.name }} provides property maintenance services across {{ b.area_line }}. If you have questions about this policy, contact us at <a href="mailto:{{ b.email_public }}">{{ b.email_public }}</a> or call <a href="tel:+{{ b.phone_e164 }}">{{ b.phone_display }}</a>.</p>
+
+    <h2>What information we collect</h2>
+    <p>When you use the site, chat assistant, quote form, phone links or email links, we may collect:</p>
+    <ul>
+      <li>Your name, phone number, email address, postcode or area.</li>
+      <li>Details about the job you want quoted.</li>
+      <li>Photos you upload through the chat to help us understand the work.</li>
+      <li>The conversation you have with the website assistant.</li>
+      <li>Basic technical information needed to run the website, such as session cookies and server logs.</li>
+    </ul>
+
+    <h2>How we use it</h2>
+    <p>We use your information to respond to enquiries, prepare quotes, arrange visits, manage customer communication, improve the website and protect the site from spam or abuse.</p>
+
+    <h2>Chat assistant and uploaded photos</h2>
+    <p>The website assistant collects the details you provide and emails them to the business so we can follow up. If you upload photos, those photos may be included with the enquiry email.</p>
+
+    <h2>Cookies</h2>
+    <p>This site uses essential session cookies so the chat can keep track of the current conversation. These cookies are used to make the website work and are not used for advertising.</p>
+
+    <h2>Who we share information with</h2>
+    <p>We do not sell your information. We may use trusted service providers to operate the website, process chat messages, send enquiry emails, host the site and manage customer communication. These providers only process information for the purposes of running the service.</p>
+
+    <h2>How long we keep information</h2>
+    <p>We keep enquiry details for as long as needed to respond to you, provide a quote, carry out work, keep business records and deal with any follow-up questions. You can ask us to delete your enquiry information where we no longer need it.</p>
+
+    <h2>Your rights</h2>
+    <p>You can contact us to ask for a copy of the personal information we hold about you, to correct it, or to ask us to delete it where appropriate. Email <a href="mailto:{{ b.email_public }}">{{ b.email_public }}</a>.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>We may update this policy from time to time. The latest version will always be shown on this page.</p>
+  </section>
+
+  <footer>© {{ b.name }} Ltd · {{ b.postcode }} Portsmouth</footer>
+</main>
+</body>
+</html>"""
+
+
 def ensure_session():
     if "session_id" not in session:
         session["session_id"] = str(uuid.uuid4())
@@ -1085,11 +1170,18 @@ def home():
                                   videos=VIDEOS, reviews=REVIEWS, hero_video=HERO_VIDEO)
 
 
+@app.route("/privacy-policy")
+def privacy_policy():
+    return render_template_string(PRIVACY_PAGE, b=BUSINESS)
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     xml = ('<?xml version="1.0" encoding="UTF-8"?>'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-           '<url><loc>https://www.ajpropertymaintenanceltd.co.uk/</loc></url></urlset>')
+           '<url><loc>https://aj-propertymaintenance.co.uk/</loc></url>'
+           '<url><loc>https://aj-propertymaintenance.co.uk/privacy-policy</loc></url>'
+           '</urlset>')
     return Response(xml, mimetype="application/xml")
 
 
