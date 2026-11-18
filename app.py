@@ -704,7 +704,7 @@ PAGE = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ b.name }} | Portsmouth Property Maintenance</title>
+<title>Property Maintenance in Portsmouth | A&amp;J</title>
 <meta name="description" content="Reliable property maintenance across {{ b.area_line }}. Bathrooms, kitchens, decorating, tiling, paving, groundwork, fencing, plumbing & electrical. Free no-obligation quotes.">
 <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}">
 <meta name="robots" content="index, follow">
@@ -1552,7 +1552,7 @@ def sitemap():
 
 @app.route("/robots.txt")
 def robots():
-    return Response("User-agent: *\nAllow: /\n", mimetype="text/plain")
+    return Response("User-agent: *\nAllow: /\nSitemap: https://aj-propertymaintenance.co.uk/sitemap.xml\n", mimetype="text/plain")
 
 
 def _schedule_lead_fallback(session_id, delay=90.0):
