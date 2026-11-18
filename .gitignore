@@ -3,3 +3,6 @@ __pycache__/
 *.py[cod]
 .venv/
 .env
+.dev.vars*
+.wrangler/
+node_modules/
